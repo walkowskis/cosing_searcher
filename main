@@ -1,0 +1,18 @@
+import pandas as pd
+
+cosing = pd.read_csv("COSING.csv", skiprows = 8, index_col = "COSING Ref No", parse_dates = ["Update Date"])
+cosing["Function"] = cosing["Function"].astype("category")
+cosing["Restriction"] = cosing["Restriction"].astype("category")
+
+print("Podaj nr CAS lub INCI name:")
+while True:
+    search = input()
+    if search == "exit":
+        break
+
+    mask_CAS = cosing["CAS No"] == search
+    mask_INCI = cosing["INCI name"] == search
+
+    query = cosing[mask_CAS|mask_INCI]
+    out = query[["INCI name", "CAS No", "Restriction"]]
+    print(out)
